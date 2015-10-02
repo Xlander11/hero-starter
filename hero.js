@@ -202,22 +202,10 @@ var moves = {
             });
 
             nearestEnemy = helpers.findNearestObjectDirectionAndDistance(gameData.board, hero, function(boardTile) {
-                if (boardTile.type === 'Hero' && boardTile.team !== hero.team) {
+                if (boardTile.type === 'Hero' && boardTile.team !== hero.team && hero.health >= boardTile.health) {
                     return true;
                 }
             });
-
-            /*if(nearestEnemy.distance === 1){
-                return nearestEnemy.direction;
-            }else if(nearestMine.distance === 1){
-                nearestMine.direction;
-            }else{
-                if(random() == 0){
-                    return (random() == 0) ? helpers.findNearestEnemy(gameData) : helpers.findNearestWeakerEnemy(gameData);
-                }else{
-                    return (random() == 0) ? helpers.findNearestUnownedDiamondMine(gameData) : helpers.findNearestNonTeamDiamondMine(gameData);
-                }
-            }*/
 
             return (nearestEnemy.distance > nearestMine.distance) ? nearestMine.direction : nearestEnemy.direction;
         }
