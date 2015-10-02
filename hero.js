@@ -181,21 +181,48 @@ var moves = {
 
     //General actions to be taken
     action: function(gameData, helpers){
-        var hero, random;
+        var hero, random, nearestMine, nearestEnemy;
 
         hero = gameData.activeHero;
+        random = function(){return Math.random() * (2 + 1) - 1 >> 0;}
 
-        if(hero.health <= 30){
+        if(hero.health <= 40){
             return helpers.findNearestHealthWell(gameData);
         }
 
         if(hero.health >= 70){
-            random = Math.random() * (2 + 1) - 1 >> 0;
+            nearestMine = helpers.findNearestObjectDirectionAndDistance(gameData.board, hero, function(boardTile) {
+                if (boardTile.type === 'DiamondMine') {
+                    if(boardTile.owner){
+                        return (boardTile.owner.team !== hero.team || boardTile.owner.id !== hero.id);
+                    }else {
+                        return true;
+                    }
+                }
+            });
 
-            return (random == 0) ? helpers.findNearestEnemy(gameData) : helpers.findNearestWeakerEnemy(gameData);;
+            nearestEnemy = helpers.findNearestObjectDirectionAndDistance(gameData.board, hero, function(boardTile) {
+                if (boardTile.type === 'Hero' && boardTile.team !== hero.team) {
+                    return true;
+                }
+            });
+
+            /*if(nearestEnemy.distance === 1){
+                return nearestEnemy.direction;
+            }else if(nearestMine.distance === 1){
+                nearestMine.direction;
+            }else{
+                if(random() == 0){
+                    return (random() == 0) ? helpers.findNearestEnemy(gameData) : helpers.findNearestWeakerEnemy(gameData);
+                }else{
+                    return (random() == 0) ? helpers.findNearestUnownedDiamondMine(gameData) : helpers.findNearestNonTeamDiamondMine(gameData);
+                }
+            }*/
+
+            return (nearestEnemy.distance > nearestMine.distance) ? nearestMine.direction : nearestEnemy.direction;
         }
 
-        if(hero.health > 30 && hero.health < 70){
+        if(hero.health > 40 && hero.health < 70){
             return (random == 0) ? helpers.findNearestNonTeamDiamondMine(gameData) : helpers.findNearestUnownedDiamondMine(gameData);
         }
     }
