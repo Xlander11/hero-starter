@@ -186,7 +186,7 @@ var moves = {
         hero = gameData.activeHero;
         random = function(){return Math.random() * (2 + 1) - 1 >> 0;}
 
-        if(hero.health <= 40){
+        if(hero.health <= 50){
             return helpers.findNearestHealthWell(gameData);
         }
 
@@ -222,7 +222,7 @@ var moves = {
             return (nearestEnemy.distance > nearestMine.distance) ? nearestMine.direction : nearestEnemy.direction;
         }
 
-        if(hero.health > 40 && hero.health < 70){
+        if(hero.health > 50 && hero.health < 70){
             return (random == 0) ? helpers.findNearestNonTeamDiamondMine(gameData) : helpers.findNearestUnownedDiamondMine(gameData);
         }
     }
