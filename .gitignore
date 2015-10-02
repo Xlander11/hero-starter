@@ -1,2 +1,6 @@
 node_modules
 npm-debug.log
+.idea/.name
+.idea/copyright/profiles_settings.xml
+.idea/libraries/hero_starter_node_modules.xml
+.idea/modules.xml
